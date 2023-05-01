@@ -1,2 +1,2 @@
-# learning_management_system
-Learning Management System
+# core_django_project
+The core of the django project
