@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 class Department(models.Model):
@@ -24,12 +25,12 @@ class Topic(models.Model):
         max_length=255,
         verbose_name='Mavzu nomi'
     )
-    body = models.TextField(verbose_name='Mavzu matni')
+    body = RichTextField(verbose_name='Mavzu matni')
     video_url = models.URLField(
         verbose_name='Video manzil',
         blank=True, null=True
     )
-    tasks = models.TextField(verbose_name='Vazifalar')
+    tasks = RichTextField(verbose_name='Vazifalar')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
