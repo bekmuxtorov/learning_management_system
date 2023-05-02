@@ -13,6 +13,9 @@ class Department(models.Model):
         verbose_name = 'Bo\'lim'
         verbose_name_plural = 'Bo\'limlar'
 
+    def get_topic(self):
+        return self.topics.all()
+
 
 class Topic(models.Model):
     department = models.ForeignKey(
@@ -39,6 +42,9 @@ class Topic(models.Model):
     class Meta:
         verbose_name = 'Mavzu'
         verbose_name_plural = 'Mavzular'
+
+    def get_resources(self):
+        return self.resources.all()
 
 
 class Resource(models.Model):
