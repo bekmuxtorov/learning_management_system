@@ -51,6 +51,7 @@ def register_request(request):
 
 
 def login_request(request):
+    msg = str()
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -64,11 +65,14 @@ def login_request(request):
             else:
                 messages.error(
                     request, "Foydalanuvchi nomi yoki parol noto‘g‘ri.")
+                msg = "Foydalanuvchi nomi yoki parol noto‘g‘ri."
         else:
             messages.error(
                 request, "Foydalanuvchi nomi yoki parol noto‘g‘ri..")
+            msg = "Foydalanuvchi nomi yoki parol noto‘g‘ri."
+
     form = AuthenticationForm()
-    return render(request=request, template_name="registration/login.html", context={"login_form": form})
+    return render(request=request, template_name="registration/login.html", context={"login_form": form, "msg": msg})
 
 
 def logout_request(request):
