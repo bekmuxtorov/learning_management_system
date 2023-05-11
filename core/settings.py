@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # Local apps
     'main',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -148,6 +149,8 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CKEDITOR_CONFIGS = {
     'default':
