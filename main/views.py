@@ -1,10 +1,14 @@
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from accounts.forms import EditProfileForm
-from .models import Department, Topic
+from accounts.models import CustomUser
+from .models import Department, Topic, Exam, ResultExam
 
 
 @login_required(login_url='account/login')
@@ -46,3 +50,41 @@ def my_view(request):
 
     context = {'instances': instances}
     return render(request, 'search_results.html', context)
+
+
+def quiz_view(request, pk):
+    department = Department.objects.get(pk=pk)
+    questions = department.exams_department.all()
+    context = {
+        'questions': questions,
+        'department': department,
+    }
+    return render(request, 'quiz.html', context)
+
+
+@csrf_exempt
+def add_result(request):
+    print(request.body.data)
+    if request.method == 'POST':
+        # user = CustomUser.objects.get(pk=request.POST.get('user'))
+        print(request.POST.get('correct'))
+        print(request.POST.get('departmant'))
+
+        # department = Department.objects.get(
+        #     pk=int(request.POST.get('departmant')))
+        # wrong = request.POST.get('wrong')
+        # correct = request.POST.get('correct')
+        # # Qo'shmoqchi bo'lgan maydonlar
+
+        # # Obyekt yaratish va saqlash
+        # new_object = ResultExam(
+        #     # user=user,
+        #     department=department,
+        #     wrong=wrong,
+        #     correct=correct
+        # )
+        # new_object.save()
+
+        return JsonResponse({'success': True, 'message': 'Object added successfully.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'})

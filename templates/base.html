@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="{% static '/assets/vendor/css/theme-default.css' %}"
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{% static '/assets/css/demo.css' %}" />
-    <link rel="stylesheet" href="{% static '/assets/css/new_style   .css' %}" />
+    <link rel="stylesheet" href="{% block link %} {% endblock link %}">
 
 
     <!-- Vendors CSS -->
@@ -59,8 +59,6 @@
                     <a href="{% url 'home' %}" class="app-brand-link">
                         9-sinf informatika va axborot texnologiyalari
                     </a>
-
-
                 </div>
 
                 <div class="menu-inner-shadow"></div>
@@ -87,8 +85,6 @@
                         </a>
                         <ul class="menu-sub">
                             {% for department_topic in department.get_topic %}
-
-
                             <li class="menu-item">
                                 <a href="{% url 'detail' pk=department_topic.pk %}" class="menu-link">
                                     <div data-i18n="Without menu">{{department_topic}}</div>
@@ -96,9 +92,17 @@
                             </li>
                             {% endfor %}
 
-
+                            {% if department.exams_department %}
+                            <li class="menu-item">
+                                <a href="{% url 'quiz_view' pk=department.id %}" class="menu-link">
+                                    <div data-i18n="Without menu">{{ department.name }} bo'yicha nazorat savollari
+                                    </div>
+                                </a>
+                            </li>
+                            {% endif %}
                         </ul>
                     </li>
+
                     {% endfor %}
 
                 </ul>
