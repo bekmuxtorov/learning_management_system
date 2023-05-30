@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from accounts.forms import EditProfileForm
-from accounts.models import CustomUser
+from accounts.models import CustomUser, Region, Status, Institution
 from .models import Department, Topic, ResultExam
 
 
@@ -17,7 +17,12 @@ def home_view(request):
     departments = Department.objects.all()
     results = ResultExam.objects.filter(
         user=request.user).order_by('-created_at').all()
+    regions = Region.objects.all()
+    status = Status.objects.all()
+    institutions = Institution.objects.all()
+
     if request.method == "POST":
+        print(request.POST)
         form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
@@ -26,7 +31,10 @@ def home_view(request):
 
     context = {
         'departments': departments,
-        'results': results
+        'results': results,
+        'regions': regions,
+        'status': status,
+        'institutions': institutions
     }
     return render(request, 'index.html', context)
 
