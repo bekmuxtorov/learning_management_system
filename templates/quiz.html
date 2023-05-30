@@ -184,36 +184,37 @@
             jsq.changeQuestion(-1);
         });
 
+        
         function addNewObject(correct_, wrong_, user_, department_) {
-            let data = {
-                correct: correct_,
-                wrong: wrong_,
-                user: user_,
-                department: department_,
-            };
-
-            console.log('bu data', JSON.stringify(data))
-            console.log('bu token:', getCookie('csrftoken'))
+            var params = new URLSearchParams();
+            params.append("correct", correct_);
+            params.append("wrong", wrong_);
+            params.append("user", user_);
+            params.append("department", department_);
+            params.append("csrfmiddlewaretoken", getCookie('csrftoken'));
 
             fetch('/api/add_result/', {
-                method: 'POST',
-                credentials: 'same-origin',
+                method: "POST",
                 headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
-                    'X-CSRFToken': getCookie('csrftoken'),
+                    "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: JSON.stringify(data) //JavaScript object of data to POST
+                body: params
             })
-                .then(response => {
-                    return response.json() //Convert response to JSON
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    throw new Error("Network response was not OK.");
                 })
-                .then(data => {
-                    //Perform actions with the response data from the view
+                .then(function (data) {
+                    console.log(data);
                 })
-        }
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        };
 
-        // CSRF tokenni olish uchun yordamchi funksiya
+
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {

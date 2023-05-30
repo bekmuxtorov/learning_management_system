@@ -1,3 +1,4 @@
+import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.db.models import Q
@@ -64,26 +65,19 @@ def quiz_view(request, pk):
 
 @csrf_exempt
 def add_result(request):
-    print(request.body.data)
     if request.method == 'POST':
-        # user = CustomUser.objects.get(pk=request.POST.get('user'))
-        print(request.POST.get('correct'))
-        print(request.POST.get('departmant'))
+        user = CustomUser.objects.get(pk=request.POST.get('user'))
+        department = Department.objects.get(pk=int(request.POST.get('department')))
+        wrong = request.POST.get('wrong')
+        correct = request.POST.get('correct')
 
-        # department = Department.objects.get(
-        #     pk=int(request.POST.get('departmant')))
-        # wrong = request.POST.get('wrong')
-        # correct = request.POST.get('correct')
-        # # Qo'shmoqchi bo'lgan maydonlar
-
-        # # Obyekt yaratish va saqlash
-        # new_object = ResultExam(
-        #     # user=user,
-        #     department=department,
-        #     wrong=wrong,
-        #     correct=correct
-        # )
-        # new_object.save()
+        new_object = ResultExam(
+            user=user,
+            department=department,
+            wrong=wrong,
+            correct=correct
+        )
+        new_object.save()
 
         return JsonResponse({'success': True, 'message': 'Object added successfully.'})
     else:

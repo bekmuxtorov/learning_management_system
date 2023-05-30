@@ -152,7 +152,6 @@ class ResultExam(models.Model):
 
     def save(self, *args, **kwargs):
         self.total_question = self.department.exams_department.count()
-        print('ok bo\'lmoqchi')
         return super().save(*args, **kwargs)
 
     class Meta:
