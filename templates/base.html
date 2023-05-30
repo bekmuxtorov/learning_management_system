@@ -92,7 +92,7 @@
                             </li>
                             {% endfor %}
 
-                            {% if department.exams_department %}
+                            {% if department.exams_department.all %}
                             <li class="menu-item">
                                 <a href="{% url 'quiz_view' pk=department.id %}" class="menu-link">
                                     <div data-i18n="Without menu">{{ department.name }} bo'yicha nazorat savollari

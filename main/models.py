@@ -154,6 +154,9 @@ class ResultExam(models.Model):
         self.total_question = self.department.exams_department.count()
         return super().save(*args, **kwargs)
 
+    def get_data(self):
+        return self.created_at.strftime("%d/%m/%Y, %H:%M:%S")
+
     class Meta:
         verbose_name = 'Natija'
         verbose_name_plural = 'Natijalar'

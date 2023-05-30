@@ -19,8 +19,8 @@
         <div class="left-title"><a class="link_ali" href="{% url 'home' %}">Bosh sahifa</a></div>
         <div class="right-title">Savollar soni: <span id="tque"></span></div>
         <div class="clearfix"></div>
-        <div id="user">{{user.id}}</div>
-        <div id="department">{{department.id}}</div>
+        <div id="user" style="display: none;">{{user.id}}</div>
+        <div id="department" style="display: none;">{{department.id}}</div>
     </header>
     {{questions}}
     <div class="content">
@@ -129,8 +129,9 @@
                         '<div class="last-row"><b>Ball:</b> &nbsp;' + res +
                         '</div>'
                     );
-
                 }
+                $("#result").append('<div><a href = "http://127.0.0.1:8000/#results">Natijalar</a></div >');
+
 
             }
             this.checkAnswer = function (option) {
@@ -184,7 +185,7 @@
             jsq.changeQuestion(-1);
         });
 
-        
+
         function addNewObject(correct_, wrong_, user_, department_) {
             var params = new URLSearchParams();
             params.append("correct", correct_);

@@ -9,12 +9,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 from accounts.forms import EditProfileForm
 from accounts.models import CustomUser
-from .models import Department, Topic, Exam, ResultExam
+from .models import Department, Topic, ResultExam
 
 
 @login_required(login_url='account/login')
 def home_view(request):
     departments = Department.objects.all()
+    results = ResultExam.objects.filter(
+        user=request.user).order_by('-created_at').all()
     if request.method == "POST":
         form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -23,7 +25,8 @@ def home_view(request):
             return redirect("home")
 
     context = {
-        'departments': departments
+        'departments': departments,
+        'results': results
     }
     return render(request, 'index.html', context)
 
@@ -67,7 +70,8 @@ def quiz_view(request, pk):
 def add_result(request):
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=request.POST.get('user'))
-        department = Department.objects.get(pk=int(request.POST.get('department')))
+        department = Department.objects.get(
+            pk=int(request.POST.get('department')))
         wrong = request.POST.get('wrong')
         correct = request.POST.get('correct')
 
