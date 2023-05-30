@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'ckeditor',
+    "corsheaders",
 
     # Local apps
     'main',
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,6 +83,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "http://localhost:8000",
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Department, Topic, Resource, Exam
+from .models import Department, Topic, Resource, Exam, ResultExam
 
 
 @admin.register(Department)
@@ -33,3 +33,11 @@ class ExamAdmin(admin.ModelAdmin):
                      'answer_b', 'answer_c', 'answer_d')
     list_filter = ('department',)
     ordering = ('-created_at',)
+
+
+@admin.register(ResultExam)
+class ResultExamAdmin(admin.ModelAdmin):
+    list_display = ('user', 'department', 'total_question', 'wrong', 'correct')
+    list_filter = ('user', 'department')
+    ordering = ('-created_at',)
+    search_fields = ('user', 'department')

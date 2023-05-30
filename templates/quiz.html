@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nazorat uchun</title>
+    <link rel="stylesheet" href="{% static 'assets/css/new_style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="left-title"><a class="link_ali" href="{% url 'home' %}">Bosh sahifa</a></div>
+        <div class="right-title">Savollar soni: <span id="tque"></span></div>
+        <div class="clearfix"></div>
+        <div id="user">{{user.id}}</div>
+        <div id="department">{{department.id}}</div>
+    </header>
+    {{questions}}
+    <div class="content">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-sm-12">
+                    <div id="result" class="quiz-body">
+                        <form name="quizForm" onSubmit="">
+                            <fieldset class="form-group">
+                                <h4><span id="qid">1.</span> <span id="question"></span></h4>
+                                <div class="option-block-container" id="question-options">
+                                </div> <!-- End of option block -->
+                            </fieldset>
+                            <button name="previous" id="previous" class="btn btn-primary">Ortga</button>
+                            &nbsp;
+                            <button name="next" id="next" class="btn btn-primary">Oldinga</button>
+                        </form>
+                    </div>
+                </div> <!-- End of col-sm-12 -->
+            </div> <!-- End of row -->
+        </div> <!-- ENd of container fluid -->
+    </div> <!-- End of content -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script>
+        /* Created and coded by Abhilash Narayan */
+        /* Quiz source: w3schools.com */
+        var quiz = {
+            "JS": [
+                {% for question in questions %}
+        {
+            "id": "{{question.id}}",
+                "question": "{{question.question}}",
+                    "options": [{
+                        "a": "{{question.answer_a}}",
+                        "b": "{{question.answer_b}}",
+                        "c": "{{question.answer_c}}",
+                        "d": "{{question.answer_d}}"
+                    }],
+                        "answer": "{{question.get_answer}}",
+                            "score": "{{question.score}}"
+        },
+        {% endfor %}
+        ]
+        }
+        var quizApp = function () {
+            this.user = document.getElementById('user').textContent;
+            this.department = document.getElementById('department').textContent;
+            this.wrong = 0;
+            this.correct = 0;
+            this.score = 0;
+            this.qno = 1;
+            this.currentque = 0;
+            var totalque = quiz.JS.length;
+            this.displayQuiz = function (cque) {
+                this.currentque = cque;
+                if (this.currentque < totalque) {
+                    $("#tque").html(totalque);
+                    $("#previous").attr("disabled", false);
+                    $("#next").attr("disabled", false);
+                    $("#qid").html(quiz.JS[this.currentque].id + '.');
+                    $("#question").html(quiz.JS[this.currentque].question);
+                    $("#question-options").html("");
+
+
+                    for (var key in quiz.JS[this.currentque].options[0]) {
+                        if (quiz.JS[this.currentque].options[0].hasOwnProperty(key)) {
+                            $("#question-options").append(
+                                "<div class='form-check option-block'>" +
+                                "<label class='form-check-label'>" +
+                                "<input type='radio' class='form-check-input' name='option' id='q" + key + "' value='" + quiz.JS[this.currentque].options[0][key] + "'><span id='optionval'>" +
+                                quiz.JS[this.currentque].options[0][key] +
+                                "</span></label>"
+                            );
+                        }
+                    }
+                }
+                if (this.currentque <= 0) {
+                    $("#previous").attr("disabled", true);
+                }
+                if (this.currentque >= totalque) {
+                    $('#next').attr('disabled', true);
+                    for (var i = 0; i < totalque; i++) {
+                        this.score = this.score + quiz.JS[i].score;
+                    }
+                    console.log('addNewObjectdan oldin')
+                    addNewObject(this.correct, this.wrong, this.user, this.department)
+                    console.log('addNewObjectdan keyin')
+                    return this.showResult(this.score);
+                }
+            }
+            this.showResult = function (scr) {
+                $("#result").addClass('result');
+                $("#result").html("<h1 class='res-header'>Umumiy ball: &nbsp;" + scr + '/' + totalque + "</h1>");
+                for (var j = 0; j < totalque; j++) {
+                    var res;
+                    if (quiz.JS[j].score == 0) {
+                        res = '<span class="wrong">' + quiz.JS[j].score + '</span><i class="fa fa-remove c-wrong"></i>';
+
+                    } else if (quiz.JS[j].score == 1) {
+                        res = '<span class="correct">' + quiz.JS[j].score + '</span><i class="fa fa-check c-correct"></i>';
+                    }
+                    $("#result").append(
+                        '<div class="result-question"><span>Q ' + quiz.JS[j].id + '</span> &nbsp;' + quiz.JS[j].question + '</div>' +
+                        '<div><b>Tog\'ri javoblar:</b> &nbsp;' + quiz.JS[j].answer + '</div>' +
+                        '<div class="last-row"><b>Ball:</b> &nbsp;' + res +
+                        '</div>'
+                    );
+
+                }
+
+            }
+            this.checkAnswer = function (option) {
+
+                var answer = quiz.JS[this.currentque].answer;
+                option = option.replace(/</g, "&lt;") //for <
+                option = option.replace(/>/g, "&gt;") //for >
+                option = option.replace(/"/g, "&quot;")
+                if (option == quiz.JS[this.currentque].answer) {
+                    if (quiz.JS[this.currentque].score == "") {
+                        quiz.JS[this.currentque].score = 1;
+                        quiz.JS[this.currentque].status = "correct";
+                        this.correct++;
+                    }
+                } else {
+                    quiz.JS[this.currentque].status = "wrong";
+                    this.wrong++;
+                }
+
+            }
+            this.changeQuestion = function (cque) {
+                this.currentque = this.currentque + cque;
+                this.displayQuiz(this.currentque);
+            }
+
+        }
+
+        var jsq = new quizApp();
+        var selectedopt;
+        $(document).ready(function () {
+            jsq.displayQuiz(0);
+            $('#question-options').on('change', 'input[type=radio][name=option]', function (e) {
+                //var radio = $(this).find('input:radio');
+                $(this).prop("checked", true);
+                selectedopt = $(this).val();
+            });
+        });
+        $('#next').click(function (e) {
+            e.preventDefault();
+            if (selectedopt) {
+                jsq.checkAnswer(selectedopt);
+            }
+
+            jsq.changeQuestion(1);
+        });
+        $('#previous').click(function (e) {
+            e.preventDefault();
+            if (selectedopt) {
+                jsq.checkAnswer(selectedopt);
+            }
+            jsq.changeQuestion(-1);
+        });
+
+        
+        function addNewObject(correct_, wrong_, user_, department_) {
+            var params = new URLSearchParams();
+            params.append("correct", correct_);
+            params.append("wrong", wrong_);
+            params.append("user", user_);
+            params.append("department", department_);
+            params.append("csrfmiddlewaretoken", getCookie('csrftoken'));
+
+            fetch('/api/add_result/', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: params
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    throw new Error("Network response was not OK.");
+                })
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        };
+
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</body>
+
+</html>
