@@ -9,6 +9,7 @@
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>9-sinf informatika va axborot texnologiyalari</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 
     <meta name="description" content="" />
 
@@ -69,6 +70,12 @@
                         <a href="{% url 'home' %}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Dashboard</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'leaderboard' %}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Leaderboard">Leaderboard</div>
                         </a>
                     </li>
 
@@ -213,6 +220,9 @@
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{% static '/assets/vendor/libs/jquery/jquery.js' %}"></script>
     <script src="{% static '/assets/vendor/libs/popper/popper.js' %}"></script>

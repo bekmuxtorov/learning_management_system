@@ -94,3 +94,11 @@ def add_result(request):
         return JsonResponse({'success': True, 'message': 'Object added successfully.'})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+
+def leaderboard_view(request):
+    all_results = ResultExam.objects.all().order_by('-correct')
+    context = {
+        'all_results': all_results
+    }
+    return render(request, 'leaderboard.html', context)

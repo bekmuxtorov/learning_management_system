@@ -65,21 +65,31 @@
         <h5 class="card-header">Natijalar</h5>
         <p class="text-muted ms-4 mb-0">Bo'limlar bo'yicha qo'yilgan nazorat ishi natijalari</p>
         <div class="card-body">
-          <table class="table">
+          <table id="datatablesSimple">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Bo'lim</th>
-                <th scope="col">Jami savollar</th>
-                <th scope="col">Xato javoblar</th>
-                <th scope="col">To'g'ri javoblar</th>
-                <th scope="col">Ishlangan vaqt</th>
+                <th>#</th>
+                <th>Bo'lim</th>
+                <th>Jami savollar</th>
+                <th>Xato javoblar</th>
+                <th>To'g'ri javoblar</th>
+                <th>Ishlangan vaqt</th>
               </tr>
             </thead>
+            <tfoot>
+              <tr>
+                <th>#</th>
+                <th>Bo'lim</th>
+                <th>Jami savollar</th>
+                <th>Xato javoblar</th>
+                <th>To'g'ri javoblar</th>
+                <th>Ishlangan vaqt</th>
+              </tr>
+            </tfoot>
             <tbody>
               {% for result in results %}
               <tr>
-                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ forloop.counter }}</td>
                 <td>{{result.department.name}}</td>
                 <td>{{result.total_question}}</td>
                 <td>{{result.wrong}}</td>
@@ -88,11 +98,14 @@
               </tr>
               {% endfor %}
 
+
             </tbody>
           </table>
         </div>
       </div>
     </div>
+
+
   </div>
 
 </div>
