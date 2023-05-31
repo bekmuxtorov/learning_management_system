@@ -97,8 +97,10 @@ def add_result(request):
 
 
 def leaderboard_view(request):
+    departments = Department.objects.all()
     all_results = ResultExam.objects.all().order_by('-correct')
     context = {
-        'all_results': all_results
+        'all_results': all_results,
+        'departments': departments,
     }
     return render(request, 'leaderboard.html', context)
