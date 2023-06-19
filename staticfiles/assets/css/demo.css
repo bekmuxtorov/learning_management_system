@@ -113,6 +113,10 @@
 }
 
 .button-wrapper table {
-  width: auto;
-  margin: 0;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.button-wrapper p {
+  margin: 0 !important;
 }
